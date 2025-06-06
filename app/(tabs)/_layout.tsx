@@ -1,43 +1,32 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Redirect, Tabs } from "expo-router";
+import { Button } from "react-native";
+import Parse from "../../services/parse";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const user = Parse.User.current();
+
+  if (!user) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
+  const handleLogout = async () => {
+    await Parse.User.logOut();
+  };
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+    <Tabs>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: "Inicio",
+          headerRight: () => <Button title="Logout" onPress={handleLogout} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="tickets"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "Mis Tickets",
+          headerRight: () => <Button title="Logout" onPress={handleLogout} />,
         }}
       />
     </Tabs>

@@ -21,11 +21,15 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    console.log("Iniciando registro...", credentials); // Debug 1
 
     try {
+      console.log("Llamando a AuthService.register..."); // Debug 2
       await AuthService.register(credentials);
-      navigate("/dashboard"); // Redirige al dashboard después del registro
+      console.log("Registro exitoso, redirigiendo..."); // Debug 3
+      navigate("/dashboard");
     } catch (err) {
+      console.error("Error en registro:", err); // Debug 4
       setError(
         err instanceof Error
           ? err.message

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthService, UserCredentials } from "../../services/auth.service";
 import "./RegisterForm.css";
+import logo from "../../assets/images/logo.jpg";
 
 const RegisterForm: React.FC = () => {
   const [credentials, setCredentials] = useState<UserCredentials>({
@@ -43,6 +44,9 @@ const RegisterForm: React.FC = () => {
 
   return (
     <div className="register-container">
+      <div className="logo-icon">
+        <img src={logo} alt="SrviceCool" />
+      </div>
       <h2 className="register-title">Registro en ServiceCool</h2>
       {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit} className="register-form">

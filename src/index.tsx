@@ -5,7 +5,6 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Parse from "parse";
 
-// Configuración moderna de Parse (v3.0+)
 Parse.initialize(
   process.env.REACT_APP_PARSE_APP_ID || "",
   process.env.REACT_APP_PARSE_JS_KEY || ""
@@ -13,9 +12,8 @@ Parse.initialize(
 Parse.serverURL =
   process.env.REACT_APP_PARSE_SERVER_URL || "https://parseapi.back4app.com/";
 
-// Solución para instalaciones (nuevo método)
 if (typeof window !== "undefined") {
-  Parse.CoreManager.set("STORAGE", localStorage); // Configura localStorage directamente
+  Parse.CoreManager.set("STORAGE", localStorage);
 }
 
 const root = ReactDOM.createRoot(

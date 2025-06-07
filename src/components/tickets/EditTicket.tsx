@@ -1,7 +1,7 @@
-// components/tickets/EditTicket.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TicketService, TicketInput } from "../../services/ticket.service";
+import "./EditTicket.css";
 
 const EditTicket: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -95,279 +95,182 @@ const EditTicket: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-        <p className="mt-2 text-gray-600">Cargando ticket...</p>
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p className="loading-text">Cargando ticket...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="bg-red-50 border-l-4 border-red-400 p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg
-                className="h-5 w-5 text-red-400"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
-          </div>
-          <div className="mt-4">
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="text-blue-600 hover:text-blue-500 font-medium"
-            >
-              Volver al dashboard
-            </button>
-          </div>
+      <div className="error-container">
+        <div className="error-message">
+          <p>{error}</p>
+          <button onClick={() => navigate("/dashboard")} className="error-link">
+            Volver al dashboard
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
-          <h2 className="text-lg leading-6 font-medium text-gray-900">
-            Editar Ticket
-          </h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Actualiza los detalles del problema o mantenimiento requerido.
-          </p>
+    <div className="edit-ticket-container">
+      <div className="edit-ticket-header">
+        <h2 className="edit-ticket-title">Editar Ticket</h2>
+        <p className="edit-ticket-description">
+          Actualiza los detalles del problema o mantenimiento requerido.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="edit-ticket-form">
+        <div className="form-group">
+          <label htmlFor="title" className="form-label">
+            Título
+          </label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            value={ticketData.title}
+            onChange={handleChange}
+            required
+            className="form-input"
+          />
         </div>
 
-        {error && (
-          <div className="bg-red-50 border-l-4 border-red-400 p-4 m-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-5 w-5 text-red-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
-            </div>
-          </div>
-        )}
+        <div className="form-group">
+          <label htmlFor="description" className="form-label">
+            Descripción
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            rows={4}
+            value={ticketData.description}
+            onChange={handleChange}
+            required
+            className="form-input"
+          />
+        </div>
 
-        <form onSubmit={handleSubmit} className="px-4 py-5 sm:p-6">
-          <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-            <div className="sm:col-span-6">
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Título
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  name="title"
-                  id="title"
-                  value={ticketData.title}
-                  onChange={handleChange}
-                  required
-                  className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
+        <div className="form-group">
+          <label htmlFor="type" className="form-label">
+            Tipo
+          </label>
+          <select
+            id="type"
+            name="type"
+            value={ticketData.type}
+            onChange={handleChange}
+            className="form-input"
+          >
+            <option value="falla">Falla técnica</option>
+            <option value="mantenimiento">Mantenimiento</option>
+            <option value="revisión">Revisión</option>
+          </select>
+        </div>
 
-            <div className="sm:col-span-6">
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Descripción
-              </label>
-              <div className="mt-1">
-                <textarea
-                  id="description"
-                  name="description"
-                  rows={4}
-                  value={ticketData.description}
-                  onChange={handleChange}
-                  required
-                  className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
+        <div className="form-group">
+          <label htmlFor="priority" className="form-label">
+            Prioridad
+          </label>
+          <select
+            id="priority"
+            name="priority"
+            value={ticketData.priority}
+            onChange={handleChange}
+            className="form-input"
+          >
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </div>
 
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="type"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Tipo
-              </label>
-              <div className="mt-1">
-                <select
-                  id="type"
-                  name="type"
-                  value={ticketData.type}
-                  onChange={handleChange}
-                  className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                >
-                  <option value="falla">Falla técnica</option>
-                  <option value="mantenimiento">Mantenimiento</option>
-                  <option value="revisión">Revisión</option>
-                </select>
-              </div>
-            </div>
+        <div className="form-group">
+          <label htmlFor="status" className="form-label">
+            Estado
+          </label>
+          <select
+            id="status"
+            name="status"
+            value={ticketData.status}
+            onChange={handleChange}
+            className="form-input"
+          >
+            <option value="pendiente">Pendiente</option>
+            <option value="en progreso">En progreso</option>
+            <option value="resuelto">Resuelto</option>
+          </select>
+        </div>
 
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="priority"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Prioridad
-              </label>
-              <div className="mt-1">
-                <select
-                  id="priority"
-                  name="priority"
-                  value={ticketData.priority}
-                  onChange={handleChange}
-                  className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                >
-                  <option value="alta">Alta</option>
-                  <option value="media">Media</option>
-                  <option value="baja">Baja</option>
-                </select>
-              </div>
-            </div>
+        <div className="form-group">
+          <label htmlFor="location" className="form-label">
+            Ubicación
+          </label>
+          <input
+            type="text"
+            name="location"
+            id="location"
+            value={ticketData.location}
+            onChange={handleChange}
+            required
+            className="form-input"
+          />
+        </div>
 
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="status"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Estado
-              </label>
-              <div className="mt-1">
-                <select
-                  id="status"
-                  name="status"
-                  value={ticketData.status}
-                  onChange={handleChange}
-                  className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                >
-                  <option value="pendiente">Pendiente</option>
-                  <option value="en progreso">En progreso</option>
-                  <option value="resuelto">Resuelto</option>
-                </select>
-              </div>
-            </div>
+        <div className="form-group">
+          <label htmlFor="fridgeModel" className="form-label">
+            Modelo de Refrigerador
+          </label>
+          <input
+            type="text"
+            name="fridgeModel"
+            id="fridgeModel"
+            value={ticketData.fridgeModel}
+            onChange={handleChange}
+            required
+            className="form-input"
+          />
+        </div>
 
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="location"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Ubicación
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  name="location"
-                  id="location"
-                  value={ticketData.location}
-                  onChange={handleChange}
-                  required
-                  className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
+        <div className="form-group">
+          <label htmlFor="dueDate" className="form-label">
+            Fecha de Vencimiento (opcional)
+          </label>
+          <input
+            type="date"
+            name="dueDate"
+            id="dueDate"
+            value={
+              ticketData.dueDate
+                ? new Date(ticketData.dueDate).toISOString().split("T")[0]
+                : ""
+            }
+            onChange={handleDateChange}
+            className="form-input"
+          />
+        </div>
 
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="fridgeModel"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Modelo de Refrigerador
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  name="fridgeModel"
-                  id="fridgeModel"
-                  value={ticketData.fridgeModel}
-                  onChange={handleChange}
-                  required
-                  className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="dueDate"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Fecha de Vencimiento (opcional)
-              </label>
-              <div className="mt-1">
-                <input
-                  type="date"
-                  name="dueDate"
-                  id="dueDate"
-                  value={
-                    ticketData.dueDate
-                      ? new Date(ticketData.dueDate).toISOString().split("T")[0]
-                      : ""
-                  }
-                  onChange={handleDateChange}
-                  className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 flex justify-end space-x-3">
-            <button
-              type="button"
-              onClick={() => navigate("/dashboard")}
-              className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              {isSubmitting ? "Guardando..." : "Guardar Cambios"}
-            </button>
-          </div>
-        </form>
-      </div>
+        <div className="form-actions">
+          <button
+            type="button"
+            onClick={() => navigate("/dashboard")}
+            className="cancel-btn"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`submit-btn ${isSubmitting ? "loading" : ""}`}
+          >
+            {isSubmitting ? "Guardando..." : "Guardar Cambios"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

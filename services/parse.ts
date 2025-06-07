@@ -9,9 +9,13 @@ Parse.initialize(
 ); // Reemplaza con tus credenciales
 Parse.serverURL = "https://parseapi.back4app.com/";
 
-// Registra las subclases (para relaciones)
-Parse.Object.registerSubclass("Ticket", () => {
-  return Parse.Object.extend("Ticket");
-});
+// Definir y registrar la subclase Ticket
+class Ticket extends Parse.Object {
+  constructor() {
+    super("Ticket");
+  }
+}
+Parse.Object.registerSubclass("Ticket", Ticket);
 
 export default Parse;
+export { Ticket }; // Exportamos la clase para usarla en otros archivos

@@ -32,7 +32,7 @@ export default function TicketsScreen() {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.ticketCard}
-      onPress={() => router.push(`/(tabs)/tickets/${item.id}`)}
+      onPress={() => router.push(`/tickets/${item.id}`)}
     >
       <Text style={styles.ticketTitle}>{item.title}</Text>
       <Text>Estado: {item.status}</Text>
@@ -60,7 +60,7 @@ export default function TicketsScreen() {
         }
       />
 
-      <Link href="/(tabs)/tickets/create" asChild>
+      <Link href="/tickets/create" asChild>
         <TouchableOpacity style={styles.addButton}>
           <Text style={styles.addButtonText}>+ Nuevo Ticket</Text>
         </TouchableOpacity>

@@ -10,6 +10,7 @@ export default function TabLayout() {
   }
 
   const handleLogout = async () => {
+    console.log("Logging out...");
     await Parse.User.logOut();
   };
 

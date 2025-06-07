@@ -1,6 +1,6 @@
-import Parse from "./parse";
+import Parse, { Ticket } from "./parse";
 
-export interface Ticket {
+export interface ITicket {
   title: string;
   description: string;
   status: "pendiente" | "en progreso" | "resuelto";
@@ -12,8 +12,8 @@ export interface Ticket {
 }
 
 export const TicketService = {
-  async createTicket(ticketData: Ticket) {
-    const Ticket = Parse.Object.extend("Ticket");
+  async createTicket(ticketData: ITicket) {
+    // Crear instancia de Ticket usando la clase registrada
     const ticket = new Ticket();
 
     // Setear valores
@@ -27,7 +27,9 @@ export const TicketService = {
 
     // Relación con el usuario actual
     const currentUser = Parse.User.current();
-    ticket.set("client", currentUser);
+    if (currentUser) {
+      ticket.set("client", currentUser);
+    }
 
     if (ticketData.dueDate) {
       ticket.set("dueDate", ticketData.dueDate);
@@ -44,7 +46,8 @@ export const TicketService = {
 
   async getTicketsByUser() {
     const currentUser = Parse.User.current();
-    const Ticket = Parse.Object.extend("Ticket");
+    if (!currentUser) return [];
+
     const query = new Parse.Query(Ticket);
 
     query.equalTo("client", currentUser);
@@ -88,6 +91,52 @@ export const TicketService = {
       return true;
     } catch (error) {
       console.error("Error deleting ticket:", error);
+      throw error;
+    }
+  },
+
+  async getTicketById(id: string) {
+    const query = new Parse.Query(Ticket);
+    try {
+      const ticket = await query.get(id);
+      return {
+        id: ticket.id,
+        ...ticket.attributes,
+        dueDate: ticket.get("dueDate")?.toISOString(), // Convertir a string
+      };
+    } catch (error) {
+      console.error("Error fetching ticket:", error);
+      throw error;
+    }
+  },
+
+  async updateTicket(id: string, ticketData: Partial<ITicket>) {
+    const query = new Parse.Query(Ticket);
+    try {
+      const ticket = await query.get(id);
+
+      // Actualizar solo los campos que han cambiado
+      if (ticketData.title) ticket.set("title", ticketData.title);
+      if (ticketData.description)
+        ticket.set("description", ticketData.description);
+      if (ticketData.status) ticket.set("status", ticketData.status);
+      if (ticketData.priority) ticket.set("priority", ticketData.priority);
+      if (ticketData.location) ticket.set("location", ticketData.location);
+      if (ticketData.fridgeModel)
+        ticket.set("fridgeModel", ticketData.fridgeModel);
+      if (ticketData.type) ticket.set("type", ticketData.type);
+      if (ticketData.dueDate) {
+        const dueDate =
+          ticketData.dueDate instanceof Date
+            ? ticketData.dueDate
+            : new Date(ticketData.dueDate);
+        ticket.set("dueDate", dueDate);
+      }
+
+      const result = await ticket.save();
+      return result;
+    } catch (error) {
+      console.error("Error updating ticket:", error);
       throw error;
     }
   },

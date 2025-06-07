@@ -8,7 +8,7 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import { TicketService } from "../../../services/tickets";
+import { TicketService } from "../../services/tickets";
 
 export default function CreateTicketScreen() {
   const [form, setForm] = useState({
@@ -25,10 +25,20 @@ export default function CreateTicketScreen() {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await TicketService.createTicket(form);
+      await TicketService.createTicket({
+        title: form.title,
+        description: form.description,
+        priority: form.priority,
+        location: form.location,
+        fridgeModel: form.fridgeModel,
+        type: form.type,
+        dueDate: form.dueDate,
+        status: "pendiente", // Estado inicial
+      });
       router.back();
     } catch (error) {
       console.error(error);
+      alert("Error al crear el ticket");
     } finally {
       setLoading(false);
     }

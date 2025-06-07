@@ -328,16 +328,18 @@ const Dashboard: React.FC = () => {
               <p>{error}</p>
             </div>
           ) : filteredTickets.length === 0 ? (
-            <div className="empty-state">
-              <svg viewBox="0 0 24 24">
-                <path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h3>No se encontraron tickets</h3>
-              <p>
-                {activeFilter !== "all" || searchQuery
-                  ? "Intenta con otros filtros o términos de búsqueda."
-                  : "Empieza creando un nuevo ticket de servicio."}
-              </p>
+            <div>
+              <div className="empty-state">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3>No se encontraron tickets</h3>
+                <p>
+                  {activeFilter !== "all" || searchQuery
+                    ? "Intenta con otros filtros o términos de búsqueda."
+                    : "Empieza creando un nuevo ticket de servicio."}
+                </p>
+              </div>
               <button
                 onClick={handleCreateTicket}
                 className="create-ticket-btn"
@@ -435,6 +437,15 @@ const Dashboard: React.FC = () => {
                   ))}
                 </tbody>
               </table>
+              <button
+                onClick={handleCreateTicket}
+                className="create-ticket-btn"
+              >
+                <svg viewBox="0 0 20 20">
+                  <path d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                </svg>
+                Nuevo Ticket
+              </button>
             </div>
           )}
         </div>

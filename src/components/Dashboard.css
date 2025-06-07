@@ -256,8 +256,7 @@ body {
 
 .search-input-container {
   position: relative;
-  width: 100%;
-  min-width: 250px;
+  width: 70%;
 }
 
 .search-input-container svg {

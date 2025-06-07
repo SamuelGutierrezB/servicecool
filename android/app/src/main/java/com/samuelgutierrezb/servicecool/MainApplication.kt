@@ -1,4 +1,4 @@
-package com.servicecool
+package com.samuelgutierrezb.servicecool
 
 import android.app.Application
 import android.content.res.Configuration

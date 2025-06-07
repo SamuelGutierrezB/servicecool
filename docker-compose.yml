@@ -1,9 +1,11 @@
 version: "3.8"
+
 services:
   web:
     build: .
     ports:
       - "3000:80"
-    env_file:
-      - .env # Carga las variables desde .env
+    environment:
+      - REACT_APP_BACK4APP_APP_ID=8NRD7pGuAcJotYf2OIsAbcGgKR0WA6qMNXCrAYw4
+      - REACT_APP_BACK4APP_JS_KEY=c5yKz1XW0R6htkdlz4sKQCOMV94kE0OaxOJs43Ax
     restart: unless-stopped

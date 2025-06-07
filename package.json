@@ -48,6 +48,8 @@
     ]
   },
   "devDependencies": {
-    "@types/parse": "^3.0.9"
+    "@types/parse": "^3.0.9",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.4"
   }
 }

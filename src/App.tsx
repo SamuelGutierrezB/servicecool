@@ -1,19 +1,20 @@
-import React, { useEffect } from "react";
+// App.tsx
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import "./config/parse"; // Importa directamente para asegurar la inicialización
+import "./config/parse";
 import LoginForm from "./components/auth/LoginForm";
 import RegisterForm from "./components/auth/RegisterForm";
 import Dashboard from "./components/Dashboard";
+import CreateTicket from "./components/tickets/CreateTicket";
+import EditTicket from "./components/tickets/EditTicket";
 import { AuthService } from "./services/auth.service";
 
 const App: React.FC = () => {
-  // Ya no necesitamos el useEffect para inicializar Parse
-
   return (
     <Router>
       <Routes>
@@ -24,6 +25,22 @@ const App: React.FC = () => {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tickets/new"
+          element={
+            <ProtectedRoute>
+              <CreateTicket />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tickets/:id/edit"
+          element={
+            <ProtectedRoute>
+              <EditTicket />
             </ProtectedRoute>
           }
         />
